@@ -3,9 +3,13 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+<<<<<<< .merge_file_a22256
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
+=======
+import kotlin.math.*
+>>>>>>> .merge_file_a07840
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
@@ -69,10 +73,22 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
+<<<<<<< .merge_file_a22256
 fun ageDescription(age: Int): String =
     if (age % 100 in 10..20 || age % 10 in 5..9 || age % 10 == 0) "$age лет"
     else if (age % 10 == 1) "$age год"
     else "$age года"
+=======
+fun ageDescription(age: Int): String {
+    if (age / 10 == 1 || age / 10 == 11) return "$age лет"
+    return when (age % 10) {
+        0, 5, 6, 7, 8, 9 -> "$age лет"
+        2, 3, 4 -> "$age года"
+        1 -> "$age год"
+        else -> "Несуществующий возраст $age"
+    }
+}
+>>>>>>> .merge_file_a07840
 
 /**
  * Простая (2 балла)
@@ -86,6 +102,7 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
+<<<<<<< .merge_file_a22256
     val s1 = t1 * v1
     val s2 = t2 * v2
     val s3 = t3 * v3
@@ -93,6 +110,16 @@ fun timeForHalfWay(
     return if (s1 >= halfWay) halfWay / v1
     else if (halfWay in s1..s2 + s1) (halfWay - s1) / v2 + t1
     else (halfWay - s1 - s2) / v3 + t1 + t2
+=======
+    val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    val sFirst = t1 * v1
+    val sSecond = t2 * v2
+    return when {
+        s <= sFirst -> s / v1
+        s > sFirst && s <= sFirst + sSecond -> (s - sFirst) / v2 + t1
+        else -> (s - sFirst - sSecond) / v3 + t1 + t2
+    }
+>>>>>>> .merge_file_a07840
 }
 
 /**
@@ -109,10 +136,19 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int =
+<<<<<<< .merge_file_a22256
     if (kingX != rookX1 && kingX != rookX2 && kingY != rookY1 && kingY != rookY2) 0
     else if (kingX == rookX1 || kingY == rookY1) {
         if (kingX == rookX2 || kingY == rookY2) 3 else 1
     } else 2
+=======
+    when {
+        (kingX == rookX2 || kingY == rookY2) && (kingX == rookX1 || kingY == rookY1)  -> 3
+        kingX == rookX1 || kingY == rookY1 -> 1
+        kingX == rookX2 || kingY == rookY2 -> 2
+        else -> 0
+    }
+>>>>>>> .merge_file_a07840
 
 /**
  * Простая (2 балла)
@@ -129,11 +165,22 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int =
+<<<<<<< .merge_file_a22256
     if (kingX != rookX && kingY != rookY && abs(bishopX - kingX) != abs(bishopY - kingY)) 0
     else if (kingX == rookX || kingY == rookY) {
         if (abs(bishopX - kingX) == abs(bishopY - kingY)) 3
         else 1
     } else 2
+=======
+    when {
+        (kingX == rookX || kingY == rookY) &&
+                (kingX - kingY == bishopX - bishopY ||
+                        kingX + kingY == bishopX + bishopY) -> 3
+        kingX == rookX || kingY == rookY -> 1
+        kingX - kingY == bishopX - bishopY || kingX + kingY == bishopX + bishopY -> 2
+        else -> 0
+    }
+>>>>>>> .merge_file_a07840
 /**
  * Простая (2 балла)
  *
@@ -142,11 +189,30 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
+<<<<<<< .merge_file_a22256
 fun triangleKind(a: Double, b: Double, c: Double): Int =
     if (a + b <= c || c + b <= a || c + a <= b) -1
     else if (a * a + b * b == c * c || a * a + c * c == b * b || b * b + c * c == a * a) 1
     else if (a * a + b * b > c * c && a * a + c * c > b * b && b * b + c * c > a * a) 0
     else 2
+=======
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val sideMax = maxOf(a, b, c)
+    val sideMin = minOf(a, b, c)
+    val sideMid = when {
+        (a == sideMax && b == sideMin) || (a == sideMin && b == sideMax) -> c
+        (a == sideMax && c == sideMin) || (a == sideMin && c == sideMax) -> b
+        else -> a
+    }
+    return if (a + b > c && a + c > b && b + c > a) when {
+        sideMax.pow(2) < sideMid.pow(2) + sideMin.pow(2) -> 0
+        sideMax.pow(2) == sideMid.pow(2) + sideMin.pow(2) -> 1
+        sideMax.pow(2) > sideMid.pow(2) + sideMin.pow(2) -> 2
+        else -> -1
+    }
+    else -1
+}
+>>>>>>> .merge_file_a07840
 
 /**
  * Средняя (3 балла)
@@ -157,6 +223,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+<<<<<<< .merge_file_a22256
     if (d <= b) {
         if (d < a) -1
         else if (d == a) 0
@@ -169,3 +236,12 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
         else if (a <= c) b - c
         else b - a
     }
+=======
+    when {
+        a <= c && c <= b && b <= d -> abs(b - c)
+        c <= a && a <= b && b <= d -> abs(b - a)
+        c <= a && a <= d && d <= b -> abs(d - a)
+        a <= c && c <= d && d <= b -> abs(d - c)
+        else -> -1
+    }
+>>>>>>> .merge_file_a07840

@@ -3,9 +3,14 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+<<<<<<< .merge_file_a21656
 import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.collections.indexOf as indexOf
+=======
+import lesson3.task1.digitNumber
+import kotlin.math.*
+>>>>>>> .merge_file_a18484
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -122,14 +127,14 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
 
 /**
  * Средняя (3 балла)
@@ -139,7 +144,11 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val mean = mean(list)
+    for (i in 0 until list.size) list[i] -= mean
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -148,7 +157,11 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var res = 0
+    for (i in 0 until a.size) res += a[i] * b[i]
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -158,7 +171,15 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var res = 0
+    var arg = 1
+    for (i in 0 until p.size) {
+        res += p[i] * arg
+        arg *= x
+    }
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -170,7 +191,10 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    for (i in 1 until list.size) list[i] += list[i - 1]
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -179,7 +203,19 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val res = mutableListOf<Int>()
+    var number = n
+    var arg = 2
+    while (number != 1) {
+        while (number % arg == 0) {
+            number /= arg
+            res.add(arg)
+        }
+        arg++
+    }
+    return res
+}
 
 /**
  * Сложная (4 балла)
@@ -188,7 +224,14 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String {
+    val str = factorize(n)
+    var res = "${str[0]}"
+    for (i in 1 until str.size) {
+        res += "*${str[i]}"
+    }
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -257,6 +300,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
+<<<<<<< .merge_file_a21656
 fun roman(n: Int): String {
     var interimNumber = n
     var romanNumb = ""
@@ -271,6 +315,36 @@ fun roman(n: Int): String {
         }
     }
     return romanNumb
+=======
+fun universal(n: Int, small: String, middle: String, big: String): String {
+    return when (n) {
+        1 -> small
+        2 -> small + small
+        3 -> small + small + small
+        4 -> small + middle
+        5 -> middle
+        6 -> middle + small
+        7 -> middle + small + small
+        8 -> middle + small + small + small
+        9 -> small + big
+        else -> ""
+    }
+}
+
+fun roman(n: Int): String {
+    var number = n
+    val M = number / 1000
+    number %= 1000
+    val C = number / 100
+    number %= 100
+    val X = number / 10
+    number %= 10
+    val I = number
+    return universal(M, "M", "M", "M") +
+            universal(C, "C", "D", "M") +
+            universal(X, "X", "L", "C") +
+            universal(I, "I", "V", "X")
+>>>>>>> .merge_file_a18484
 }
 
 /**
@@ -280,4 +354,52 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+
+val a = listOf<String>(
+    "", "один", "два", "три", "четыре",
+    "пять", "шесть", "семь", "восемь", "девять"
+)
+val aa = listOf<String>(
+    "двадцать", "тридцать", "сорок", "пятьдесят",
+    "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
+)
+val tenNineteen = listOf<String>(
+    "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+    "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
+)
+val aaa = listOf<String>(
+    "сто", "двести", "триста", "четыреста",
+    "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот",
+)
+
+fun russian(n: Int): String {
+    var res = ""
+    when (digitNumber(n)) {
+        1 -> res = a[n]
+        2 -> if (n / 10 == 1) res = tenNineteen[n % 10]
+        else {
+            res = if (n % 10 != 0) aa[n / 10 - 2] + " " + a[n % 10]
+            else aa[n / 10 - 2]
+        }
+        3 -> res = if (n % 100 != 0) aaa[n / 100 - 1] + " " + russian(n % 100)
+        else aaa[n / 100 - 1]
+        4, 5, 6 -> {
+            var th = russian(n / 1000)
+            val ending = when (n / 1000 % 100) {
+                in 11..14 -> "тысяч"
+                else -> {
+                    when (n / 1000 % 10) {
+                        0, in 5..9 -> "тысяч"
+                        1 -> "одна тысяча"
+                        2 -> "две тысячи"
+                        else -> "тысячи"
+                    }
+                }
+            }
+            if (ending == "одна тысяча" || ending == "две тысячи") th = russian(n / 1000 - n / 1000 % 10)
+            if (th.isNotEmpty()) res = th + " " + ending + " " + russian(n % 1000)
+            else res = ending + " " + russian(n % 1000)
+        }
+    }
+    return res.trim()
+}

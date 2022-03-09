@@ -72,11 +72,19 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+<<<<<<< .merge_file_a10284
 fun digitNumber(n: Int): Int {
     var k = 0
     do (k++) while (n % 10.0.pow(k) != n.toDouble())
     return k
 }
+=======
+fun digitNumber(n: Int): Int =
+    when {
+        n / 10 == 0 -> 1
+        else -> digitNumber(n / 10) + 1
+    }
+>>>>>>> .merge_file_a02264
 
 /**
  * Простая (2 балла)
@@ -85,6 +93,7 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
+<<<<<<< .merge_file_a10284
     var a = 0
     var b = 1
     var p: Int
@@ -96,20 +105,37 @@ fun fib(n: Int): Int {
     return b
 }
 
+=======
+    var a = 1
+    var b = 1
+    var res = 2
+    while (res < n) {
+        res += 1
+        val c = b
+        b += a
+        a = c
+    }
+    return b
+}
+>>>>>>> .merge_file_a02264
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    for (i in 2..sqrt(n.toDouble()).toInt()) if (n % i == 0) return i
+    return n
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int =
+    n / minDivisor(n)
 
 /**
  * Простая (2 балла)
@@ -127,7 +153,16 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var number = x
+    var count = 0
+    while (number != 1) {
+        if (number % 2 == 0) number /= 2
+        else number = 3 * number + 1
+        count++
+    }
+    return count
+}
 
 /**
  * Средняя (3 балла)
@@ -135,6 +170,7 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
+<<<<<<< .merge_file_a10284
 fun lcm(m: Int, n: Int): Int {
     var r1 = max(m, n)
     var r2 = min(m, n)
@@ -147,6 +183,22 @@ fun lcm(m: Int, n: Int): Int {
     }
     return n * m / r1
 }
+=======
+fun gcd(m: Int, n: Int): Int { //Алгоритм Евклида на нахождение НОД
+    var a = maxOf(m, n)
+    var b = minOf(m, n)
+    var c = a - b
+    while (a != b) {
+        a = maxOf(c, b)
+        b = minOf(c, b)
+        c = a - b
+    }
+    return a
+}
+
+fun lcm(m: Int, n: Int): Int = m * n / gcd(m, n)
+
+>>>>>>> .merge_file_a02264
 /**
  * Средняя (3 балла)
  *
@@ -154,7 +206,12 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
+<<<<<<< .merge_file_a10284
 fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+=======
+fun isCoPrime(m: Int, n: Int): Boolean =
+    gcd(m, n) == 1
+>>>>>>> .merge_file_a02264
 
 /**
  * Средняя (3 балла)
@@ -163,7 +220,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var res = 0
+    var number = n
+    while (number != 0) {
+        res = res * 10 + number % 10
+        number /= 10
+    }
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -174,7 +239,8 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean =
+    revert(n) == n
 
 /**
  * Средняя (3 балла)
@@ -184,7 +250,15 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var number = n
+    val digit = number % 10
+    while (number > 0) {
+        if (digit != number % 10) return true
+        number /= 10
+    }
+    return false
+}
 
 /**
  * Средняя (4 балла)
@@ -195,7 +269,22 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val a = x % (2 * PI)
+    var fact = 1.0
+    var power = 1.0
+    var walkingMinus = 1
+    var finRes = a
+    var notFinRes = 1.0
+    while (abs(notFinRes) >= eps) {
+        walkingMinus *= -1
+        fact *= (power + 1) * (power + 2)
+        power += 2
+        notFinRes = a.pow(power) / fact * walkingMinus
+        finRes += notFinRes
+    }
+    return finRes
+}
 
 /**
  * Средняя (4 балла)
@@ -206,7 +295,22 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val a = x % (2 * PI)
+    var fact = 1.0
+    var power = 0.0
+    var walkingMinus = 1
+    var finRes = 1.0
+    var notFinRes = 1.0
+    while (abs(notFinRes) >= eps) {
+        power += 2
+        walkingMinus *= -1
+        fact *= (power - 1) * power
+        notFinRes = a.pow(power) / fact * walkingMinus
+        finRes += notFinRes
+    }
+    return finRes
+}
 
 /**
  * Сложная (4 балла)
@@ -218,6 +322,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
+<<<<<<< .merge_file_a10284
     var digInOrder = 0
     var i = 1.0
     var sqr = 0
@@ -232,6 +337,15 @@ fun squareSequenceDigit(n: Int): Int {
         (sqr / 10.0.pow(digInOrder - n).toInt()) % 10
     }
     return digit
+=======
+    var number = 1
+    var line = 1
+    while (line < n) {
+        number++
+        line += digitNumber(number.toDouble().pow(2).toInt())
+    }
+    return (number.toDouble().pow(2).toInt()) / 10.0.pow(line - n).toInt() % 10
+>>>>>>> .merge_file_a02264
 }
 
 /**
@@ -244,6 +358,7 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
+<<<<<<< .merge_file_a10284
     var digInOrder = 0
     var i = 1
     var numbFib = 0
@@ -258,4 +373,13 @@ fun fibSequenceDigit(n: Int): Int {
         (numbFib / 10.0.pow(digInOrder - n).toInt()) % 10
     }
     return digit
+=======
+    var number = 1
+    var line = 1
+    while (line < n) {
+        number++
+        line += digitNumber(fib(number))
+    }
+    return fib(number) / 10.0.pow(line - n).toInt() % 10
+>>>>>>> .merge_file_a02264
 }

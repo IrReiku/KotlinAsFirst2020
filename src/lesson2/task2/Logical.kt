@@ -3,9 +3,13 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+<<<<<<< .merge_file_a22068
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+=======
+import kotlin.math.*
+>>>>>>> .merge_file_a10588
 
 /**
  * Пример
@@ -22,7 +26,11 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean =
+<<<<<<< .merge_file_a22068
     number % 10 + number % 100 / 10 == number / 1000 + number % 1000 / 100
+=======
+    ((number / 100) / 10 + (number / 100) % 10) == ((number % 100) / 10 + (number % 100) % 10)
+>>>>>>> .merge_file_a10588
 
 /**
  * Простая (2 балла)
@@ -32,7 +40,11 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+<<<<<<< .merge_file_a22068
     x1 == x2 || y1 == y2 || abs(x1 - x2) == abs(y1 - y2)
+=======
+    x1 == x2 || y1 == y2 || y1 - x1 == y2 - x2 || x1 + y1 == x2 + y2
+>>>>>>> .merge_file_a10588
 
 
 /**
@@ -42,12 +54,24 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int =
+<<<<<<< .merge_file_a22068
     if (month == 2) {
         if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) 29
         else 28
     }
     else if (month % 2 != 0 && month <= 7 || month % 2 == 0 && month > 7) 31
     else 30
+=======
+    when (month) {
+        2 -> when {
+            (year % 4 == 0 && year % 100 != 0) || (year % 100 == 0 && year % 400 == 0) -> 29
+            else -> 28
+        }
+        1, 3, 5, 7, 8, 10, 12 -> 31
+        else -> 30
+    }
+
+>>>>>>> .merge_file_a10588
 /**
  * Простая (2 балла)
  *
@@ -58,7 +82,8 @@ fun daysInMonth(month: Int, year: Int): Int =
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+): Boolean =
+    r2 - sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2)) >= r1
 
 
 /**
@@ -71,6 +96,7 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+<<<<<<< .merge_file_a22068
     val ar = arrayOf(a, b, c)
     ar.sort()
     return ar[0] <= min(r, s) && ar[1] <= max(r, s)
@@ -80,3 +106,15 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
 
 
 
+=======
+    val bMin = minOf(a, b, c)
+    val bMax = maxOf(a, b, c)
+    val bMid = when {
+        (a == bMax && b == bMin) || (a == bMin && b == bMax) -> c
+        (a == bMax && c == bMin) || (a == bMin && c == bMax) -> b
+        else -> a
+    }
+    return bMin <= min(r, s) && bMid <= max(r, s)
+}
+
+>>>>>>> .merge_file_a10588

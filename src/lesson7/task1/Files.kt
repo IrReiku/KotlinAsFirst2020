@@ -63,7 +63,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        if (!line.startsWith('_')) {
+            writer.write(line)
+            writer.newLine()
+        }
+    }
+    writer.close()
 }
 
 /**
@@ -77,6 +84,7 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
+<<<<<<< .merge_file_a15484
     val text = File(inputName).readLines().toString()
 
     for (substr in substrings) {
@@ -90,6 +98,21 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         res[substr] = count
     }
     return res
+=======
+    val subs = substrings.toSet().toList()
+    File(inputName).forEachLine {
+        for (key in subs) {
+            var count = 0
+            var line = it.toLowerCase()
+            while (line.contains(key.toLowerCase())) {
+                count++
+                line = line.removeRange(0..line.indexOf(key.toLowerCase(), 0))
+            }
+            res[key] = res.getOrDefault(key, 0) + count
+        }
+    }
+    return res.toMap()
+>>>>>>> .merge_file_a18016
 }
 
 
@@ -248,7 +271,23 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    val res = mutableListOf<String>()
+    var maxSize = 0
+    for (line in File(inputName).readLines()) {
+        if (line.toLowerCase().toSet().size == line.toLowerCase().length) {
+            if (line.length > maxSize) {
+                res.clear()
+                res.add(line)
+                maxSize = line.length
+            } else if (line.length == maxSize) res.add(line)
+        }
+    }
+    for (i in res) {
+        if (i != res.last()) writer.append(i, ", ")
+        else writer.write(i)
+    }
+    writer.close()
 }
 
 /**
@@ -582,5 +621,47 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     while (currentLine.length != strLhv.length) currentLine = " $currentLine"
     outputWriter.write(currentLine)
     outputWriter.close()
+}
+
+/**
+ * Дан текстовый файл, в котором схематично изображена схема
+ * прямоугольного мини-лабиринта:
+ * - во всех строках одинаковое количество символов
+ * - символ # обозначает препятствие
+ * - символ . свободное место
+ * - символ * начальное местоположение "Робота"
+ * Функция, которую нужно написать, принимает как параметры
+ * имя этого файла и строку с командами для робота вида
+ * "rllluddurld", где r обозначает движение вправо, l влево, u вверх
+ * и d вниз, другие команды запрещены. Функция должна вернуть
+ * координаты той клетки лабиринта, на которой робот окажется
+ * после выполнения команд. Если очередная команда требует от
+ * робота наступить на препятствие или выйти за границы
+ * лабиринта, робот просто остаётся на месте и переходит к следующей команде.
+ */
+
+fun maze(inputName: String, commands: String): Pair<Int, Int> {
+    var start = -1 to -1
+    val lab = mutableListOf<MutableList<Char>>()
+    for (line in File(inputName).readLines()) {
+        lab.add(line.toMutableList())
+        lab[lab.size - 1].add(0, '#')
+        lab[lab.size - 1].add('#')
+        if ('*' in line) start = lab.size to line.toList().indexOf('*') + 1
+    }
+    lab.add(0, lab[0].toMutableList())
+    lab.first().replaceAll { '#' }
+    lab.add(lab[0])
+    for (command in commands) {
+        val check = when (command) {
+            'r' -> start.first to start.second + 1
+            'l' -> start.first to start.second - 1
+            'u' -> start.first - 1 to start.second
+            'd' -> start.first + 1 to start.second
+            else -> throw IllegalArgumentException()
+        }
+        if (lab[check.first][check.second] != '#') start = check.first to check.second
+    }
+    return start.first to start.second
 }
 

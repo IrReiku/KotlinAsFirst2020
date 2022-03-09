@@ -142,6 +142,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
+<<<<<<< .merge_file_a20564
     val exceptionCheck = Regex("""^\d+( [\+\-] \d+)*""")
     var sum = 0
     if (!expression.matches(exceptionCheck)) throw IllegalArgumentException()
@@ -156,6 +157,23 @@ fun plusMinus(expression: String): Int {
             }
         return sum
     }
+=======
+    val str = expression.split(" ")
+    var res = 0
+    var minus = 1
+    for (i in str) {
+        if (str.indexOf(i) % 2 == 0) {
+            if (i.all { it in '0'..'9' })
+                res += i.toInt() * minus
+            else throw IllegalArgumentException()
+        } else minus = when (i) {
+            "+" -> 1
+            "-" -> -1
+            else -> throw IllegalArgumentException()
+        }
+    }
+    return res
+>>>>>>> .merge_file_a14152
 }
 
 /**
@@ -189,6 +207,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
+<<<<<<< .merge_file_a20564
     val formatCheck =
         Regex("""(.+ \d+(\.\d+)?; )*.+ \d+(\.\d+)?""")
     if (description.matches(formatCheck)) {
@@ -200,6 +219,20 @@ fun mostExpensive(description: String): String {
         }
         return product[costs.indexOf(maxCost)]
     } else return ""
+=======
+    val productPrice = description.split("; ")
+    var maxPrice = 0.0
+    var res = ""
+    for (i in productPrice) {
+        val pair = i.split(" ")
+        if (pair.size != 2) return ""
+        if (pair.last().toDouble() >= maxPrice) {
+            maxPrice = pair.last().toDouble()
+            res = pair.first()
+        }
+    }
+    return res
+>>>>>>> .merge_file_a14152
 }
 
 /**
